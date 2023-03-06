@@ -12,8 +12,8 @@ class AdminController extends Controller
 {
     public function view(Request $request): \Inertia\Response
     {
-//        $user = $request->user();
-//        dd($user->hasRole(1, 'moder'));
-        return Inertia::render('Admin/AdminPanel');
+         //$user = $request->user();
+         //dd($user->getPermissions());
+         return Inertia::render('Admin/AdminPanel');
     }
 }

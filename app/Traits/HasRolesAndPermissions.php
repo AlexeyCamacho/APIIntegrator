@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use App\Models\Permission;
+use Illuminate\Support\Collection;
 
 trait HasRolesAndPermissions
 {
@@ -50,6 +51,24 @@ trait HasRolesAndPermissions
     public function getAllPermissions(array $permissions)
     {
         return Permission::whereIn('slug',$permissions)->get();
+    }
+
+    public function getPermissions($company = null)
+    {
+        $permissions = $this->permissions()->get();
+        $rolesPermissions = $this->roles($company)->get()->map(function (Role $role) {
+             return $role->permissions()->get();
+        });
+
+        foreach ($rolesPermissions as $collect) {
+            $permissions = $permissions->merge($collect);
+        }
+
+        $permissions = $permissions->map(function (Permission $permission) {
+            return $permission->slug;
+        });
+
+        return $permissions;
     }
 
     public function givePermissionsTo(... $permissions)
