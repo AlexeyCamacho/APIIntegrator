@@ -5,9 +5,20 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
+
 const showingNavigationDropdown = ref(false);
+
+const mainPage = computed(() => {
+    return location.pathname.indexOf('dashboard') !== -1
+});
+
+const adminPage = computed(() => {
+    return location.pathname.indexOf('admin') !== -1
+});
+
 </script>
 
 <template>
@@ -29,10 +40,10 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('dashboard')" :active="mainPage">
                                     Главная
                                 </NavLink>
-                                <NavLink :href="route('admin.view')" :active="route().current('admin.view')">
+                                <NavLink :href="route('admin.view')" :active="adminPage">
                                     Админ-панель
                                 </NavLink>
                             </div>
@@ -115,8 +126,11 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('dashboard')" :active="mainPage">
                             Главная
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('admin.view')" :active="adminPage">
+                            Админ-панель
                         </ResponsiveNavLink>
                     </div>
 

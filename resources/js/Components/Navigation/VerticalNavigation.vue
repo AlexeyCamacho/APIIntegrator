@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col top-0 left-0 w-64 bg-white h-full border-r">
+    <div class="flex flex-col top-0 left-0 w-64 bg-white border-r">
         <div class="flex items-center justify-center h-14 border-b">
             <div>Меню</div>
         </div>
