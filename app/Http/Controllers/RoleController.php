@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 class RoleController extends Controller
 {
-    public function get(Request $request)
+    public function get(Request $request): \Inertia\Response
     {
-        //dd($request->route());
         return Inertia::render('Admin/Roles',[
             'roles' => Role::all(),
         ]);
