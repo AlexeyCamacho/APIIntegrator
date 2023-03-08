@@ -9,7 +9,8 @@ defineProps({ roles: Array })
 
 <template>
     <AdminPanel>
-        <div class="p-4">
+        <h2 class="p-4 text-lg">Управление ролями</h2>
+        <div class="px-4">
             <div v-for="(item, key) in $props.roles" class="my-1">
                 <div class="flex flex-row justify-between hover:bg-gray-200 p-2 rounded-md">
                     <div>

@@ -1,5 +1,7 @@
 <script setup>
 import IconBase from '@/Components/Icons/IconBase.vue';
+import { createPopper } from '@popperjs/core';
+
 </script>
 
 <template>
