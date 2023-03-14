@@ -7,6 +7,7 @@ import IconBuildingsGear from '@/Components/Icons/IconBuildingsGear.vue';
 import IconPersonVcard from '@/Components/Icons/IconPersonVcard.vue';
 import IconEdit from '@/Components/Icons/IconEdit.vue';
 import IconDelete from '@/Components/Icons/IconDelete.vue';
+import IconCreate from '@/Components/Icons/IconCreate.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -26,7 +27,7 @@ const classes = computed(() => {
 </script>
 
 <template>
-    <svg :class="classes" fill="none" stroke="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <svg :class="classes" class="self-center" stroke="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
         <IconBuildings v-if="props.name === 'Buildings'"></IconBuildings>
         <IconHome v-if="props.name === 'Home'"></IconHome>
         <IconPerson v-if="props.name === 'Person'"></IconPerson>
@@ -35,5 +36,6 @@ const classes = computed(() => {
         <IconPersonVcard v-if="props.name === 'PersonVcard'"></IconPersonVcard>
         <IconEdit v-if="props.name === 'Edit'"></IconEdit>
         <IconDelete v-if="props.name === 'Delete'"></IconDelete>
+        <IconCreate v-if="props.name === 'Create'"></IconCreate>
     </svg>
 </template>

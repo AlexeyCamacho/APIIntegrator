@@ -15,4 +15,9 @@ class RoleController extends Controller
             'roles' => Role::all(),
         ]);
     }
+
+    public function create(Request $request): \Inertia\Response
+    {
+        return Inertia::render('Admin/Role');
+    }
 }
