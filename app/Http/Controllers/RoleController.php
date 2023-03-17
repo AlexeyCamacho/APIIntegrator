@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Support\Facades\Route;
 
 class RoleController extends Controller
@@ -18,6 +19,9 @@ class RoleController extends Controller
 
     public function create(Request $request): \Inertia\Response
     {
-        return Inertia::render('Admin/Role');
+        return Inertia::render('Admin/Role', [
+            'permissions' => Permission::all(),
+            'categories' => config('categoryPermissions.categories')
+        ]);
     }
 }

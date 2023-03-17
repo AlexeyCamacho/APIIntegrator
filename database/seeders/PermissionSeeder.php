@@ -34,10 +34,23 @@ class PermissionSeeder extends Seeder
         ]);
 
         Permission::firstOrCreate([
+            'name' => 'Редактирование ролей',
+            'slug' => 'edit-role',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Удаление ролей',
+            'slug' => 'delete-role',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
             'name' => 'Просмотр пользователей',
             'slug' => 'view-user',
             'global' => '1'
         ]);
+
 
         $admin = Role::where('slug', 'admin')->first();
         $admin->permissions()->detach();

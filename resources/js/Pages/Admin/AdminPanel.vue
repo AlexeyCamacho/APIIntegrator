@@ -5,8 +5,11 @@ import LinkNav from '@/Components/Navigation/LinkNav.vue';
 import CategoryNav from '@/Components/Navigation/CategoryNav.vue';
 import { Head } from '@inertiajs/vue3';
 import IconBase from '@/Components/Icons/IconBase.vue';
+import { computed } from 'vue';
 
-
+const rolePage = computed(() => {
+    return location.pathname.indexOf('role') !== -1
+});
 
 </script>
 
@@ -33,7 +36,7 @@ import IconBase from '@/Components/Icons/IconBase.vue';
                                 <IconBase :name="'PersonGear'"></IconBase>
                             </LinkNav>
                             <LinkNav :title="'Роли'" :href="route('role.get')" v-if="$page.props.auth.permissions.includes('view-role')"
-                                     :active="route().current('role.get')">
+                                     :active="rolePage">
                                 <IconBase :name="'PersonVcard'"></IconBase>
                             </LinkNav>
                         </VerticalNavigation>

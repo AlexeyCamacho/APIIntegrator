@@ -4,7 +4,7 @@ import CreateButton from '@/Components/Buttons/CreateButton.vue';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 
-defineProps({ roles: Array })
+defineProps({ permissions: Array })
 
 </script>
 
@@ -12,7 +12,7 @@ defineProps({ roles: Array })
     <AdminPanel>
         <div class="flex flex-row justify-between">
             <h2 class="p-4 text-lg">Управление ролями</h2>
-            <div class="px-4 self-center">
+            <div class="px-4 self-center" v-if="$page.props.auth.permissions.includes('create-role')">
                 <CreateButton :href="route('role.create')">Добавить</CreateButton>
             </div>
         </div>
