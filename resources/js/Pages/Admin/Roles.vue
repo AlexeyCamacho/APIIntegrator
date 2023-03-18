@@ -4,7 +4,7 @@ import CreateButton from '@/Components/Buttons/CreateButton.vue';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 
-defineProps({ permissions: Array })
+defineProps({ roles: Array })
 
 </script>
 

@@ -51,10 +51,46 @@ class PermissionSeeder extends Seeder
             'global' => '1'
         ]);
 
+        Permission::firstOrCreate([
+            'name' => 'Просмотр компаний',
+            'slug' => 'view-company',
+            'global' => '0'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Просмотр компаний',
+            'slug' => 'view-company-admin',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Создание компаний',
+            'slug' => 'create-company-admin',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Изменение компаний',
+            'slug' => 'edit-company',
+            'global' => '0'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Изменение компаний',
+            'slug' => 'edit-company-admin',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Удаление компаний',
+            'slug' => 'delete-company-admin',
+            'global' => '1'
+        ]);
+
 
         $admin = Role::where('slug', 'admin')->first();
         $admin->permissions()->detach();
-        $admin->permissions()->attach(Permission::all()->map(function (Permission $permission) {
+        $admin->permissions()->attach(Permission::where('global', 1)->get()->map(function (Permission $permission) {
             return $permission;
         }));
     }
