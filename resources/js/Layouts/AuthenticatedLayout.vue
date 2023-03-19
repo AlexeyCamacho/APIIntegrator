@@ -43,7 +43,7 @@ const adminPage = computed(() => {
                                 <NavLink :href="route('dashboard')" :active="mainPage">
                                     Главная
                                 </NavLink>
-                                <NavLink :href="route('admin.view')" :active="adminPage">
+                                <NavLink :href="route('admin.view')" :active="adminPage" v-if="$page.props.auth.permissions.includes('view-admin-panel')">
                                     Админ-панель
                                 </NavLink>
                             </div>
@@ -129,7 +129,7 @@ const adminPage = computed(() => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="mainPage">
                             Главная
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('admin.view')" :active="adminPage">
+                        <ResponsiveNavLink :href="route('admin.view')" :active="adminPage" v-if="$page.props.auth.permissions.includes('view-admin-panel')">
                             Админ-панель
                         </ResponsiveNavLink>
                     </div>

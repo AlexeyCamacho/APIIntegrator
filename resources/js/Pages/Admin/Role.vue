@@ -17,7 +17,8 @@ const form = useForm({
     name: null,
     slug: null,
     global: false,
-    permissions: [],
+    globalPermissions: [],
+    localPermissions: [],
 });
 
 const categoriesPermissions = computed(() => {
@@ -112,15 +113,26 @@ const updateRole = () => {
                         </div>
                     </div>
                     <template v-for="(item, key) in categoriesPermissions" >
-                        <Transition mode="out-in">
+                        <Transition>
                         <div v-if="item.global == form.global" class="p-2 shadow bg-slate-100 border-t-4 border-cyan-500 rounded">
                             <div class="font-medium">{{ props.categories[key] }}</div>
                             <div v-for="(item1, key1) in item.permissions">
-                                <Checkbox :checked="form.permissions"
+                                <Checkbox :checked="form.globalPermissions"
                                           :value="item1.id"
                                           :id="item1.name + '-' + key"
-                                          v-model="form.permissions"
-                                class="mr-2"></Checkbox>
+                                          v-model="form.globalPermissions"
+                                          class="mr-2"
+                                          v-if="item.global">
+                                </Checkbox>
+
+                                <Checkbox :checked="form.localPermissions"
+                                          :value="item1.id"
+                                          :id="item1.name + '-' + key"
+                                          v-model="form.localPermissions"
+                                          class="mr-2"
+                                          v-if="!item.global">
+
+                                </Checkbox>
                                 <InputLabel :for="item1.name + '-' + key" :value="props.actions[item1.name]" />
                             </div>
                         </div>
@@ -141,9 +153,9 @@ const updateRole = () => {
 
 <style scoped>
 
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 1s ease;
+.v-enter-active
+{
+    transition: opacity .5s ease;
 }
 
 .v-enter-from,
