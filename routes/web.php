@@ -46,9 +46,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', 'get')->name('role.get');
                 Route::get('/create', 'create')->name('role.create');
                 Route::post('/', 'store')->name('role.store');
-                Route::put('/', 'edit')->name('role.edit');
-                Route::patch('/', 'update')->name('role.update');
-                Route::delete('/', 'destroy')->name('role.destroy');
+                Route::get('/{id}/edit', 'edit')->name('role.edit');
+                Route::put('/{id}', 'update')->name('role.update');
+                Route::delete('/{id}', 'destroy')->name('role.destroy');
             });
         });
     });

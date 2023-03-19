@@ -9,6 +9,12 @@ class Permission extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'global',
+    ];
+
     public function roles()
     {
         return $this->belongsToMany(Role::class,'roles_permissions')->withTimestamps();;

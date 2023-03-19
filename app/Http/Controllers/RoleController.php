@@ -13,6 +13,10 @@ class RoleController extends Controller
 {
     public function get(Request $request): \Inertia\Response
     {
+        if (!$request->user()->hasPermissionTo('view-role')) {
+            return Inertia::render('Errors/Error403');
+        }
+
         return Inertia::render('Admin/Roles',[
             'roles' => Role::all(),
         ]);
@@ -20,6 +24,10 @@ class RoleController extends Controller
 
     public function create(Request $request): \Inertia\Response
     {
+        if (!$request->user()->hasPermissionTo('create-role')) {
+            return Inertia::render('Errors/Error403');
+        }
+
         return Inertia::render('Admin/Role', [
             'permissions' => Permission::all(),
             'categories' => __('categoriesPermissions'),
@@ -27,8 +35,12 @@ class RoleController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
+        if (!$request->user()->hasPermissionTo('create-role')) {
+            return Inertia::render('Errors/Error403');
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'alpha', 'unique:roles'],
             'slug' => ['required', 'string', 'min:3', 'alpha', 'unique:roles'],
@@ -51,15 +63,71 @@ class RoleController extends Controller
             $role->permissions()->sync($validated['localPermissions']);
         }
 
-        if ($role) {
-            return Redirect::route('role.get');
-        } else {
-            return back();
+        return Redirect::route('role.get');
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (!$request->user()->hasPermissionTo('edit-role')) {
+            return Inertia::render('Errors/Error403');
         }
+
+        $role = Role::find($id);
+
+        return Inertia::render('Admin/Role', [
+            'permissions' => Permission::all(),
+            'categories' => __('categoriesPermissions'),
+            'actions' =>  __('actions'),
+            'role' => $role,
+            'rolePermissions' => $role->permissions()->pluck('id')
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!$request->user()->hasPermissionTo('edit-role')) {
+            return Inertia::render('Errors/Error403');
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'min:3', 'alpha', 'unique:roles,name,'.$id],
+            'slug' => ['required', 'string', 'min:3', 'alpha', 'unique:roles,slug,'.$id],
+            'global' => ['required', 'boolean'],
+            'globalPermissions' => ['exclude_if:global,false', 'array'],
+            'globalPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
+            'localPermissions' => ['exclude_if:global,true', 'array'],
+            'localPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
+        ]);
+
+        $role = Role::find($id);
+
+        $role->fill([
+            'name' => $validated['name'],
+            'slug' => $validated['slug'],
+            'global' => $validated['global'],
+        ]);
+
+        $role->save();
+
+        if ($validated['global']) {
+            $role->permissions()->sync($validated['globalPermissions']);
+        } else {
+            $role->permissions()->sync($validated['localPermissions']);
+        }
+
+        return Redirect::route('role.get');
     }
 
     public function destroy(Request $request)
     {
+        if (!$request->user()->hasPermissionTo('delete-role')) {
+            return Inertia::render('Errors/Error403');
+        }
 
+        $validated = $request->validate([
+            'id' => ['required', 'integer', 'numeric', 'exists:roles'],
+        ]);
+
+        Role::destroy($validated['id']);
     }
 }

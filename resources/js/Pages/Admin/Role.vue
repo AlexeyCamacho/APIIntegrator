@@ -6,9 +6,29 @@ import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import SaveButton from '@/Components/Buttons/SaveButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
-import {computed, ref} from "vue";
+import {computed, ref, onMounted} from "vue";
 
-const props = defineProps({ permissions: Array, categories: Object, actions: Object })
+const props = defineProps({
+    permissions: Array,
+    categories: Object,
+    actions: Object,
+    role: Object,
+    rolePermissions: Array,
+})
+
+onMounted(() => {
+    if (props.role) {
+        form.name = props.role.name;
+        form.slug = props.role.slug;
+        form.global = props.role.global;
+
+        if (props.role.global) {
+            form.globalPermissions = props.rolePermissions;
+        } else {
+            form.localPermissions = props.rolePermissions;
+        }
+    }
+})
 
 const nameInput = ref(null);
 const slugInput = ref(null);
@@ -42,28 +62,50 @@ const categoriesPermissions = computed(() => {
     return categoryPermissions;
 });
 
+const header = computed(() => {
+    return props.role ? 'Обновление' : 'Создание'
+});
+
 const updateRole = () => {
-    form.post(route('role.store'), {
-        preserveScroll: true,
-        onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.slug) {
-                form.reset('slug');
-                slugInput.value.focus();
-            }
-            if (form.errors.name) {
-                form.reset('name');
-                nameInput.value.focus();
-            }
-        },
-    });
+    if (!props.role) {
+        form.post(route('role.store'), {
+            preserveScroll: true,
+            onSuccess: () => form.reset(),
+            onError: () => {
+                if (form.errors.slug) {
+                    form.reset('slug');
+                    slugInput.value.focus();
+                }
+                if (form.errors.name) {
+                    form.reset('name');
+                    nameInput.value.focus();
+                }
+            },
+        });
+
+    } else {
+        form.put(route('role.update', props.role.id), {
+            preserveScroll: true,
+            onSuccess: () => form.reset(),
+            onError: () => {
+                if (form.errors.slug) {
+                    form.reset('slug');
+                    slugInput.value.focus();
+                }
+                if (form.errors.name) {
+                    form.reset('name');
+                    nameInput.value.focus();
+                }
+            },
+        });
+    }
 };
 </script>
 
 
 <template>
     <AdminPanel>
-        <h2 class="p-4 text-lg">Создание/Обновление роли</h2>
+        <h2 class="p-4 text-lg">{{ header }} роли</h2>
         <div class="p-4">
             <form @submit.prevent="updateRole">
                 <div class="grid md:grid-cols-3 grid-cols-1 gap-3">

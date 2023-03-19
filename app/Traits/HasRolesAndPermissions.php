@@ -35,6 +35,7 @@ trait HasRolesAndPermissions
 
     public function hasPermissionTo($permission, $company = null)
     {
+        $permission = Permission::where('slug', $permission)->first();
         return $this->hasPermissionThroughRole($permission, $company) || $this->hasPermission($permission->slug, $company);
     }
 
