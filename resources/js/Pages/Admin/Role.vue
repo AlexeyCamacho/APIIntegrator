@@ -20,7 +20,7 @@ onMounted(() => {
     if (props.role) {
         form.name = props.role.name;
         form.slug = props.role.slug;
-        form.global = props.role.global;
+        form.global = Boolean(props.role.global);
 
         if (props.role.global) {
             form.globalPermissions = props.rolePermissions;

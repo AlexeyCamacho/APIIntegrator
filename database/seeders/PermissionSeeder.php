@@ -52,6 +52,24 @@ class PermissionSeeder extends Seeder
         ]);
 
         Permission::firstOrCreate([
+            'name' => 'Создание пользователей',
+            'slug' => 'create-user',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Изменение пользователей',
+            'slug' => 'edit-user',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
+            'name' => 'Удаление пользователей',
+            'slug' => 'delete-user',
+            'global' => '1'
+        ]);
+
+        Permission::firstOrCreate([
             'name' => 'Просмотр компаний',
             'slug' => 'view-company',
             'global' => '0'

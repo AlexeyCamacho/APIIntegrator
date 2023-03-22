@@ -7,6 +7,10 @@ import { Head } from '@inertiajs/vue3';
 import IconBase from '@/Components/Icons/IconBase.vue';
 import { computed } from 'vue';
 
+const userPage = computed(() => {
+    return location.pathname.indexOf('user') !== -1
+});
+
 const rolePage = computed(() => {
     return location.pathname.indexOf('role') !== -1
 });
@@ -32,7 +36,8 @@ const rolePage = computed(() => {
 
                             <CategoryNav :title="'Управление'"></CategoryNav>
                             <LinkNav :title="'Компании'" :href="route('dashboard')"><IconBase :name="'BuildingsGear'"></IconBase></LinkNav>
-                            <LinkNav :title="'Пользователи'" :href="route('dashboard')" v-if="$page.props.auth.permissions.includes('view-user')">
+                            <LinkNav :title="'Пользователи'" :href="route('user.get')" v-if="$page.props.auth.permissions.includes('view-user')"
+                                     :active="userPage">
                                 <IconBase :name="'PersonGear'"></IconBase>
                             </LinkNav>
                             <LinkNav :title="'Роли'" :href="route('role.get')" v-if="$page.props.auth.permissions.includes('view-role')"

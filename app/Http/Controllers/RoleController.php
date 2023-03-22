@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleCreateUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use App\Models\Role;
@@ -13,7 +15,7 @@ class RoleController extends Controller
 {
     public function get(Request $request): \Inertia\Response
     {
-        if (!$request->user()->hasPermissionTo('view-role')) {
+        if (!Gate::allows('view-role')) {
             return Inertia::render('Errors/Error403');
         }
 
@@ -24,7 +26,7 @@ class RoleController extends Controller
 
     public function create(Request $request): \Inertia\Response
     {
-        if (!$request->user()->hasPermissionTo('create-role')) {
+        if (!Gate::allows('create-role')) {
             return Inertia::render('Errors/Error403');
         }
 
@@ -35,27 +37,18 @@ class RoleController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(RoleCreateUpdateRequest $request): \Inertia\Response|RedirectResponse
     {
-        if (!$request->user()->hasPermissionTo('create-role')) {
+        if (!Gate::allows('create-role')) {
             return Inertia::render('Errors/Error403');
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'alpha', 'unique:roles'],
-            'slug' => ['required', 'string', 'min:3', 'alpha', 'unique:roles'],
-            'global' => ['required', 'boolean'],
-            'globalPermissions' => ['exclude_if:global,false', 'array'],
-            'globalPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
-            'localPermissions' => ['exclude_if:global,true', 'array'],
-            'localPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
-        ]);
+        $validated = $request->validated();
 
-        $role = Role::create([
-            'name' => $validated['name'],
-            'slug' => $validated['slug'],
-            'global' => $validated['global'],
-        ]);
+        $role = Role::updateOrCreate(
+            ['id' => -1],
+            ['name' => $validated['name'], 'slug' => $validated['slug'], 'global' => $validated['global']]
+        );
 
         if ($validated['global']) {
             $role->permissions()->sync($validated['globalPermissions']);
@@ -66,9 +59,9 @@ class RoleController extends Controller
         return Redirect::route('role.get');
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): \Inertia\Response
     {
-        if (!$request->user()->hasPermissionTo('edit-role')) {
+        if (!Gate::allows('edit-role')) {
             return Inertia::render('Errors/Error403');
         }
 
@@ -83,31 +76,18 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(RoleCreateUpdateRequest $request, $id): \Inertia\Response|RedirectResponse
     {
-        if (!$request->user()->hasPermissionTo('edit-role')) {
+        if (!Gate::allows('edit-role')) {
             return Inertia::render('Errors/Error403');
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'alpha', 'unique:roles,name,'.$id],
-            'slug' => ['required', 'string', 'min:3', 'alpha', 'unique:roles,slug,'.$id],
-            'global' => ['required', 'boolean'],
-            'globalPermissions' => ['exclude_if:global,false', 'array'],
-            'globalPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
-            'localPermissions' => ['exclude_if:global,true', 'array'],
-            'localPermissions.*' => ['numeric', 'integer', 'exists:permissions,id'],
-        ]);
+        $validated = $request->validated();
 
-        $role = Role::find($id);
-
-        $role->fill([
-            'name' => $validated['name'],
-            'slug' => $validated['slug'],
-            'global' => $validated['global'],
-        ]);
-
-        $role->save();
+        $role = Role::updateOrCreate(
+            ['id' => $id],
+            ['name' => $validated['name'], 'slug' => $validated['slug'], 'global' => $validated['global']]
+        );
 
         if ($validated['global']) {
             $role->permissions()->sync($validated['globalPermissions']);
@@ -120,7 +100,7 @@ class RoleController extends Controller
 
     public function destroy(Request $request)
     {
-        if (!$request->user()->hasPermissionTo('delete-role')) {
+        if (!Gate::allows('delete-role')) {
             return Inertia::render('Errors/Error403');
         }
 

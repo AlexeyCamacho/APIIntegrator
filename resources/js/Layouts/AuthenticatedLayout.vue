@@ -78,7 +78,7 @@ const adminPage = computed(() => {
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Профиль </DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')"> Настройки </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Выход
                                         </DropdownLink>
@@ -144,7 +144,7 @@ const adminPage = computed(() => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Профиль </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> Настройки </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Выход
                             </ResponsiveNavLink>

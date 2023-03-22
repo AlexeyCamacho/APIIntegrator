@@ -24,7 +24,7 @@ class PermissionServiceProvider extends ServiceProvider
         try {
             Permission::get()->map(function ($permission) {
                 Gate::define($permission->slug, function ($user, $company = null) use ($permission) {
-                    return $user->hasPermissionTo($permission, $company);
+                    return $user->hasPermissionTo($permission->slug, $company);
                 });
             });
         } catch (\Exception $e) {
