@@ -10,7 +10,9 @@ class AdminController extends Controller
 {
     public function view(Request $request): \Inertia\Response
     {
-         Gate::allows('view-company');
+        if (!Gate::allows('view-admin-panel')) {
+            return Inertia::render('Errors/Error403');
+        }
 
          return Inertia::render('Admin/AdminPanel');
     }
