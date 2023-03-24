@@ -60,4 +60,11 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function show(Request $request): Response
+    {
+        return Inertia::render('Profile/Profile', [
+            'user' => $request->user(),
+        ]);
+    }
 }

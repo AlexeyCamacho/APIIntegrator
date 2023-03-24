@@ -6,7 +6,7 @@ defineProps({companies: Array })
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Главная" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -17,7 +17,6 @@ defineProps({companies: Array })
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div v-for="(item, key) in companies" class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-4">
                     <div class="p-6 text-gray-900">{{ item.name }}</div>
-                    {{item}}
                 </div>
             </div>
         </div>
