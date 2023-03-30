@@ -11,17 +11,26 @@ class MainController extends Controller
 {
     public function show(Request $request): \Inertia\Response
     {
-        $companiesPermissions = collect();
         $companies = $request->user()->companies()->get();
+        $companiesPermissions = $this->getPermForCompanies($companies);
+
+        return Inertia::render('Dashboard',[
+            'companies' => Gate::allows('view-company-admin') ? $this->getPermForCompanies(Company::all()) : $companiesPermissions,
+        ]);
+    }
+
+    private function getPermForCompanies($companies) {
+        $companiesPermissions = collect();
 
         foreach ($companies as $company) {
             $tmp = collect($company->toArray());
-            $tmp = $tmp->merge(['permissions' => $company->roles()->first()->permissions()->pluck('slug')->toArray()]);
+            if ($company->roles()->count()) {
+                $tmp = $tmp->merge(['permissions' => $company->roles()->first()->permissions()->pluck('slug')->toArray()]);
+            } else {
+                $tmp = $tmp->merge(['permissions' => '']);
+            }
             $companiesPermissions->push($tmp);
         }
-
-        return Inertia::render('Dashboard',[
-            'companies' => Gate::allows('view-company-admin') ? Company::all() : $companiesPermissions,
-        ]);
+        return $companiesPermissions;
     }
 }

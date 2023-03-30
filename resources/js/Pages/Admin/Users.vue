@@ -3,9 +3,6 @@ import AdminPanel from '@/Pages/Admin/AdminPanel.vue';
 import CreateButton from '@/Components/Buttons/CreateButton.vue';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
-import DangerButton from '@/Components/DangerButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import Modal from '@/Components/Modal.vue';
 import {nextTick, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 
