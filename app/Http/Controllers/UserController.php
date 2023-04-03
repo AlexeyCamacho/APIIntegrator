@@ -18,4 +18,16 @@ class UserController extends Controller
             'users' => User::with('roles')->get(),
         ]);
     }
+
+    public function show(Request $request)
+    {
+        if (!$request->user()->hasPermissionTo('view-user')) {
+            return Inertia::render('Errors/Error403');
+        }
+
+        return Inertia::render('Profile/Profile', [
+            'user' => $request->user(),
+            'companies' => $request->user()->companiesWithRoleName(),
+        ]);
+    }
 }

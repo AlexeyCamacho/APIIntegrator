@@ -3,12 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\HasRolesAndPermissions;
-use App\Models\Company;
 
 class User extends Authenticatable
 {
@@ -48,5 +48,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Company::class,'users_roles_companies')
             ->withPivot('role_id')->withTimestamps();
+    }
+
+    public function companiesWithRoleName()
+    {
+        return $this->companies->map(function (Company $item, int $key) {
+            $company = $item->toArray();
+            $company['roleName'] = Role::find($item->pivot->role_id)->name;
+            return $company;
+        });
     }
 }

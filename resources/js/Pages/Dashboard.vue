@@ -31,7 +31,7 @@ function canEdit(permissons) {
                         <div>
                             {{ item.name }}
                         </div>
-                        <div class="flex flex-row">
+                        <div class="flex flex-row gap-2">
                             <div v-if="$page.props.auth.permissions.includes('edit-company-admin') || canEdit(item.permissions)">
                                 <EditButton @click="gotoEditRole(item.id)"></EditButton>
                             </div>

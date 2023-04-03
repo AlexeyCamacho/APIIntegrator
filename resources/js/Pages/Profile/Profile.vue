@@ -44,8 +44,11 @@ const props = defineProps({
                             <div class="bg-slate-200 rounded p-2 shadow drop-shadow">
                                 <div class="text-xl">Компании</div>
                                 <div v-for="(item, key) in props.companies" class="my-3 flex flex-row justify-between
-                                    border-2 border-blue-400 border-t-blue-700 border-l-blue-700 p-2 rounded-lg ">
+                                    border-2 border-blue-700 border-t-blue-800 border-l-blue-800 p-2 rounded-lg ">
                                     <div>{{ item.name }}</div>
+                                    <div>
+                                        <span class="inline-block whitespace-nowrap rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline font-bold text-white border-red-500 border">{{ item.roleName }}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="bg-slate-200 rounded p-2 shadow drop-shadow">Устройства</div>

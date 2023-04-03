@@ -4,6 +4,7 @@ import CreateButton from '@/Components/Buttons/CreateButton.vue';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import {nextTick, ref} from "vue";
+import { Link } from '@inertiajs/vue3';
 import {useForm} from "@inertiajs/vue3";
 
 defineProps({users: Array })
@@ -77,7 +78,14 @@ const closeModal = () => {
                                                 class="rounded-3xl"
                                             />
                                             <div class="ml-3">
-                                                <p class="font-bold mb-1">{{item.name}}</p>
+                                                <p class="font-bold mb-1">
+                                                    <Link :href="route('user.show', item.id)"
+                                                        :class="'underline decoration-transparent transition duration-300 ease-in-out hover:decoration-inherit hover:text-lg'"
+                                                        v-if="$page.props.auth.permissions.includes('view-user')">
+                                                        {{item.name}}
+                                                    </Link>
+                                                    <span v-else>{{item.name}}</span>
+                                                </p>
                                                 <p class="text-gray-500 mb-0">{{item.email}}</p>
                                             </div>
                                         </div>

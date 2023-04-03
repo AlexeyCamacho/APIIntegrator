@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\User;
+use App\Models\Company;
+use App\Models\Role;
 
 class ProfileController extends Controller
 {
@@ -66,7 +67,7 @@ class ProfileController extends Controller
     {
         return Inertia::render('Profile/Profile', [
             'user' => $request->user(),
-            'companies' => $request->user()->companies,
+            'companies' => $request->user()->companiesWithRoleName(),
         ]);
     }
 }
