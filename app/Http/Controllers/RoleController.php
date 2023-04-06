@@ -43,20 +43,7 @@ class RoleController extends Controller
             return Inertia::render('Errors/Error403');
         }
 
-        $validated = $request->validated();
-
-        $role = Role::updateOrCreate(
-            ['id' => -1],
-            ['name' => $validated['name'], 'slug' => $validated['slug'], 'global' => $validated['global']]
-        );
-
-        if ($validated['global']) {
-            $role->permissions()->sync($validated['globalPermissions']);
-        } else {
-            $role->permissions()->sync($validated['localPermissions']);
-        }
-
-        return Redirect::route('role.get');
+        return $this->updateOrCreate($request);
     }
 
     public function edit(Request $request, $id): \Inertia\Response
@@ -82,6 +69,11 @@ class RoleController extends Controller
             return Inertia::render('Errors/Error403');
         }
 
+        return $this->updateOrCreate($request, $id);
+    }
+
+    private function updateOrCreate(RoleCreateUpdateRequest $request, $id = -1): RedirectResponse
+    {
         $validated = $request->validated();
 
         $role = Role::updateOrCreate(

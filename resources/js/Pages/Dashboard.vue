@@ -3,8 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
-import {computed} from "vue";
-import { usePage } from '@inertiajs/vue3'
 
 defineProps({companies: Array })
 
