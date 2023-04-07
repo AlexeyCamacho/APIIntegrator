@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use App\Models\Role;
 use App\Models\Permission;
+use Inertia\Response;
 
 class RoleController extends Controller
 {
-    public function get(Request $request): \Inertia\Response
+    public function get(Request $request): Response
     {
         if (!Gate::allows('view-role')) {
             return Inertia::render('Errors/Error403');
@@ -24,7 +25,7 @@ class RoleController extends Controller
         ]);
     }
 
-    public function create(Request $request): \Inertia\Response
+    public function create(Request $request): Response
     {
         if (!Gate::allows('create-role')) {
             return Inertia::render('Errors/Error403');
@@ -37,7 +38,7 @@ class RoleController extends Controller
         ]);
     }
 
-    public function store(RoleCreateUpdateRequest $request): \Inertia\Response|RedirectResponse
+    public function store(RoleCreateUpdateRequest $request): Response|RedirectResponse
     {
         if (!Gate::allows('create-role')) {
             return Inertia::render('Errors/Error403');
@@ -46,7 +47,7 @@ class RoleController extends Controller
         return $this->updateOrCreate($request);
     }
 
-    public function edit(Request $request, $id): \Inertia\Response
+    public function edit(Request $request, $id): Response
     {
         if (!Gate::allows('edit-role')) {
             return Inertia::render('Errors/Error403');
@@ -63,7 +64,7 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(RoleCreateUpdateRequest $request, $id): \Inertia\Response|RedirectResponse
+    public function update(RoleCreateUpdateRequest $request, $id): Response|RedirectResponse
     {
         if (!Gate::allows('edit-role')) {
             return Inertia::render('Errors/Error403');
@@ -90,7 +91,7 @@ class RoleController extends Controller
         return Redirect::route('role.get');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): bool|Response
     {
         if (!Gate::allows('delete-role')) {
             return Inertia::render('Errors/Error403');
@@ -101,5 +102,7 @@ class RoleController extends Controller
         ]);
 
         Role::destroy($validated['id']);
+
+        return true;
     }
 }

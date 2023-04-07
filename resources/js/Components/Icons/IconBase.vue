@@ -8,6 +8,7 @@ import IconPersonVcard from '@/Components/Icons/IconPersonVcard.vue';
 import IconEdit from '@/Components/Icons/IconEdit.vue';
 import IconDelete from '@/Components/Icons/IconDelete.vue';
 import IconCreate from '@/Components/Icons/IconCreate.vue';
+import IconChecklg from '@/Components/Icons/IconChecklg.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -37,5 +38,6 @@ const classes = computed(() => {
         <IconEdit v-if="props.name === 'Edit'"></IconEdit>
         <IconDelete v-if="props.name === 'Delete'"></IconDelete>
         <IconCreate v-if="props.name === 'Create'"></IconCreate>
+        <IconChecklg v-if="props.name === 'Checklg'"></IconChecklg>
     </svg>
 </template>

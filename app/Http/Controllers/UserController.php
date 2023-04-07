@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\User;
 use App\Models\Role;
 
@@ -49,7 +50,9 @@ class UserController extends Controller
         }
 
         return Inertia::render('Admin/User', [
-            'roles' => Role::where('global', 1)->get(),
+            'globalRoles' => Role::where('global', 1)->get(),
+            'localRoles' => Role::where('global', 0)->get(),
+            'companies' => Company::orderBy('name')->get(),
         ]);
     }
 

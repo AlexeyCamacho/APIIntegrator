@@ -65,7 +65,7 @@ const closeModal = () => {
                             <EditButton @click="gotoEditRole(item.id)"></EditButton>
                         </div>
                         <div v-if="$page.props.auth.permissions.includes('delete-role')">
-                            <DeleteButton @click="confirmRoleDeletion(item.id, item.name)"></DeleteButton>
+                            <DeleteButton @click="confirmRoleDeletion(item.id, item.name)" :tooltip="'Удалить'"></DeleteButton>
                         </div>
                     </div>
                 </div>
