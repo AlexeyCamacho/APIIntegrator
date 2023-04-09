@@ -91,7 +91,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="deleteRole"
                     >
-                        Удалить аккаунт
+                        Удалить роль
                     </DangerButton>
                 </div>
                 <div class="flex justify-end mt-2">

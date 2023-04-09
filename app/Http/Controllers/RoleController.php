@@ -91,7 +91,7 @@ class RoleController extends Controller
         return Redirect::route('role.get');
     }
 
-    public function destroy(Request $request): bool|Response
+    public function destroy(Request $request)
     {
         if (!Gate::allows('delete-role')) {
             return Inertia::render('Errors/Error403');
@@ -102,7 +102,5 @@ class RoleController extends Controller
         ]);
 
         Role::destroy($validated['id']);
-
-        return true;
     }
 }

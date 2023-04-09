@@ -67,7 +67,7 @@ class ProfileController extends Controller
     {
         return Inertia::render('Profile/Profile', [
             'user' => $request->user(),
-            'companies' => $request->user()->companiesWithRoleName(),
+            'companies' => $request->user()->companiesWithRoles(),
         ]);
     }
 }

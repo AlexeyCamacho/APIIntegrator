@@ -23,6 +23,6 @@ defineExpose({focus: () => input.value.focus()});
         ref="input"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)">
-        <option v-for="(item, key) in options" :value="item.value">{{ item.name }}</option>
+        <option v-for="(item, key) in options" :value="item.value" :key="item.value + item.name">{{ item.name }}</option>
     </select>
 </template>

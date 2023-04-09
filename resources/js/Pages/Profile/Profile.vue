@@ -47,7 +47,7 @@ const props = defineProps({
                                     border-2 border-blue-700 border-t-blue-800 border-l-blue-800 p-2 rounded-lg ">
                                     <div>{{ item.name }}</div>
                                     <div>
-                                        <span class="inline-block whitespace-nowrap rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline font-bold text-white border-red-500 border">{{ item.roleName }}</span>
+                                        <span class="inline-block whitespace-nowrap rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline font-bold text-white border-red-500 border">{{ item.role.name }}</span>
                                     </div>
                                 </div>
                             </div>

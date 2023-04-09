@@ -3,30 +3,33 @@ import AdminPanel from '@/Pages/Admin/AdminPanel.vue';
 import CreateButton from '@/Components/Buttons/CreateButton.vue';
 import EditButton from '@/Components/Buttons/EditButton.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
+import Modal from '@/Components/Modal.vue';
+import DangerButton from '@/Components/DangerButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import {nextTick, ref} from "vue";
 import { Link } from '@inertiajs/vue3';
 import {useForm} from "@inertiajs/vue3";
 
 defineProps({users: Array })
-const confirmingRoleDeletion = ref(false);
-let roleName = ref('');
+const confirmingUserDeletion = ref(false);
+let userName = ref('');
 
-const confirmRoleDeletion = (id, name) => {
-    confirmingRoleDeletion.value = true;
+const confirmUserDeletion = (id, name) => {
+    confirmingUserDeletion.value = true;
     form.id = id;
-    roleName = name;
+    userName = name;
 };
 
-const gotoEditRole = (id) => {
-    window.location.href = route('role.edit', id);
+const gotoEditUser = (id) => {
+    window.location.href = route('user.edit', id);
 }
 
 const form = useForm({
     id: null,
 });
 
-const deleteRole = () => {
-    form.delete(route('role.destroy', form.id), {
+const deleteUser = () => {
+    form.delete(route('user.destroy', form.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => {
@@ -37,7 +40,7 @@ const deleteRole = () => {
 };
 
 const closeModal = () => {
-    confirmingRoleDeletion.value = false;
+    confirmingUserDeletion.value = false;
     form.reset();
 };
 
@@ -97,10 +100,10 @@ const closeModal = () => {
                                     <td class="whitespace-nowrap px-6 py-4">
                                         <div class="flex flex-row gap-2">
                                             <div v-if="$page.props.auth.permissions.includes('edit-user')">
-                                                <EditButton @click="gotoEditRole(item.id)"></EditButton>
+                                                <EditButton @click="gotoEditUser(item.id)"></EditButton>
                                             </div>
                                             <div v-if="$page.props.auth.permissions.includes('delete-user')">
-                                                <DeleteButton @click="confirmRoleDeletion(item.id, item.name)"></DeleteButton>
+                                                <DeleteButton @click="confirmUserDeletion(item.id, item.name)"></DeleteButton>
                                             </div>
                                         </div>
                                     </td>
@@ -112,5 +115,35 @@ const closeModal = () => {
                 </div>
             </div>
         </div>
+
+        <Modal :show="confirmingUserDeletion" @close="closeModal">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    Вы уверены, что хотите удалить пользователя {{ userName }}?
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600">
+                    При удалении пользователя все его компании будут сохранены.
+                </p>
+
+                <div class="mt-6 flex justify-end">
+                    <SecondaryButton @click="closeModal"> Отмена </SecondaryButton>
+
+                    <DangerButton
+                        class="ml-3"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                        @click="deleteUser"
+                    >
+                        Удалить пользователя
+                    </DangerButton>
+                </div>
+                <div class="flex justify-end mt-2">
+                    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+                        <p v-if="form.hasErrors" class="text-sm text-red-700 self-center">Ошибка при удалении.</p>
+                    </Transition>
+                </div>
+            </div>
+        </Modal>
     </AdminPanel>
 </template>

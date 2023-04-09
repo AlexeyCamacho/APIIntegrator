@@ -50,11 +50,11 @@ class User extends Authenticatable
             ->withPivot('role_id')->withTimestamps();
     }
 
-    public function companiesWithRoleName()
+    public function companiesWithRoles()
     {
         return $this->companies->map(function (Company $item, int $key) {
             $company = $item->toArray();
-            $company['roleName'] = Role::find($item->pivot->role_id)->name;
+            $company['role'] = Role::find($item->pivot->role_id);
             return $company;
         });
     }
